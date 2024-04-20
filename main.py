@@ -1,6 +1,7 @@
 import tkinter as tk
 import requests
 root = tk.Tk()
+root.title("TETR.IO Seeder")
 root.geometry("400x400")
 
 def getSeedings():
