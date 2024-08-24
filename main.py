@@ -27,14 +27,18 @@ def getSeedings():
         outvar.set("fetching player " + str(i+1) + " of " + str(len(players)))
         root.update()
         pname = players[i]
-        data = requests.get(api_base + pname.lower())
+        data = requests.get(api_base + pname.lower() + "/summaries/league") 
         try:
-            item = data.json()["data"]["user"]["league"]["rating"]
-            rank = data.json()["data"]["user"]["league"]["rank"]
-            mrank = data.json()["data"]["user"]["league"]["bestrank"]
+            item = data.json()["data"]["tr"]
         except:
             item = -1
+        try:
+            rank = data.json()["data"]["rank"]
+        except:
             rank = "z"
+        try:
+            mrank = data.json()["data"]["bestrank"]
+        except:
             mrank = "z"
         values.append(item)
         names.append(pname)
@@ -95,7 +99,7 @@ settingRemoveUnrankedLabel.grid(column=0, row=2)
 settingRemoveUnrankedCheckbox.grid(column=1,row=2)
 
 rankcapcheck = tk.IntVar(master=root)
-rankslist = ["x", "u", "ss", "s+", "s", "s-", "a+", "a", "a-", "b+", "b", "b-", "c+", "c", "c-", "d", "d-"]
+rankslist = ["x+","x", "u", "ss", "s+", "s", "s-", "a+", "a", "a-", "b+", "b", "b-", "c+", "c", "c-", "d", "d-"]
 settingRemoveRankCapLabel = tk.Label(master=root, text="Remove Above Max Rank")
 settingRemoveRankCapCheckbox = tk.Checkbutton(master=root, variable=rankcapcheck)
 rankvar = tk.StringVar(master=root, value="ss")
