@@ -30,7 +30,6 @@ def getSeedings():
         headers = requests.utils.default_headers()
         headers["User-Agent"] = "willyjwillyj Seeder Script"
         data = requests.get(api_base + pname.lower() + "/summaries/league", headers=headers) 
-        print(data.json())
         try:
             item = data.json()["data"]["tr"]
         except:
