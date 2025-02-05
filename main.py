@@ -1,9 +1,10 @@
 import tkinter as tk
 import requests
 import time
+import webbrowser
 root = tk.Tk()
 root.title("TETR.IO Seeder")
-root.geometry("400x500")
+root.geometry("500x500")
 
 def getSeedings():
     global rankvar
@@ -106,18 +107,47 @@ def getSeedings():
 
         
 
+current_version = "v1.2.0"
+github_connection_success = False
+newest_version = current_version
+
+try:
+    release_data = requests.get("https://api.github.com/repos/willyjwillyj/TETR.IO-Seeder/releases/latest")
+    newest_version = (release_data.json()["name"])
+except:
+    pass
+else:
+    github_connection_success = True
+    
+
+ver_label = tk.Label(master=root, text="You are using version " + current_version)
+ver_label.grid(row=0,column=0)
+
+if github_connection_success:
+    if newest_version == current_version:
+        ver_label_success = tk.Label(master=root, text="You are on the latest version")
+        ver_label_success.grid(row=0,column=1)
+    else:
+        ver_label_failure = tk.Button(master=root, text="Update to the latest version", command=lambda:webbrowser.open("https://github.com/willyjwillyj/TETR.IO-Seeder/releases", new=0, autoraise=True))
+        ver_label_failure.grid(row=0,column=1)
+else:
+    ver_label_failure = tk.Label(master=root, text="Failed to discover latest version")
+    ver_label_failure.grid(row=0,column=1)
+
+
+
 
 
 elabel = tk.Label(master=root, text="Input Players")
 eentry = tk.Text(master=root, width=20, height=5)
-elabel.grid(column=0, row=0,columnspan=1)
-eentry.grid(column=0, row=1, columnspan=2)
+elabel.grid(column=0, row=1,columnspan=1)
+eentry.grid(column=0, row=2, columnspan=2)
 
 unrankcheck = tk.IntVar(master=root)
 settingRemoveUnrankedLabel = tk.Label(master=root, text="Remove Unranked")
 settingRemoveUnrankedCheckbox = tk.Checkbutton(master=root, variable=unrankcheck)
-settingRemoveUnrankedLabel.grid(column=0, row=2)
-settingRemoveUnrankedCheckbox.grid(column=1,row=2)
+settingRemoveUnrankedLabel.grid(column=0, row=3)
+settingRemoveUnrankedCheckbox.grid(column=1,row=3)
 
 rankslist = ["x+","x", "u", "ss", "s+", "s", "s-", "a+", "a", "a-", "b+", "b", "b-", "c+", "c", "c-", "d", "d-"]
 
@@ -126,42 +156,42 @@ settingRemoveRankCapLabel = tk.Label(master=root, text="Remove Above Max Rank")
 settingRemoveRankCapCheckbox = tk.Checkbutton(master=root, variable=rankcapcheck)
 rankvar = tk.StringVar(master=root, value="ss")
 settingRemoveRankCapDropdown = tk.OptionMenu(root, rankvar, *rankslist)
-settingRemoveRankCapLabel.grid(column=0,row=3)
-settingRemoveRankCapCheckbox.grid(column=1,row=3)
-settingRemoveRankCapDropdown.grid(column=2,row=3)
+settingRemoveRankCapLabel.grid(column=0,row=4)
+settingRemoveRankCapCheckbox.grid(column=1,row=4)
+settingRemoveRankCapDropdown.grid(column=2,row=4)
 
 rankfloorcheck = tk.IntVar(master=root)
 settingRemoveRankFloorLabel = tk.Label(master=root, text="Remove Below Max Rank Floor")
 settingRemoveRankFloorCheckbox = tk.Checkbutton(master=root, variable=rankfloorcheck)
 ranklowvar = tk.StringVar(master=root, value="ss")
 settingRemoveRankFloorDropdown = tk.OptionMenu(root, ranklowvar, *rankslist)
-settingRemoveRankFloorLabel.grid(column=0,row=4)
-settingRemoveRankFloorCheckbox.grid(column=1,row=4)
-settingRemoveRankFloorDropdown.grid(column=2,row=4)
+settingRemoveRankFloorLabel.grid(column=0,row=5)
+settingRemoveRankFloorCheckbox.grid(column=1,row=5)
+settingRemoveRankFloorDropdown.grid(column=2,row=5)
 
 considerPreviousSeason = tk.IntVar(master=root)
 considerPreviousSeasonLabel = tk.Label(master=root, text="Consider Previous Seasons For Rank Caps/Floors")
 considerPreviousSeasonCheckbox = tk.Checkbutton(master=root, variable=considerPreviousSeason)
-considerPreviousSeasonLabel.grid(row=5,column=0)
-considerPreviousSeasonCheckbox.grid(row=5,column=1)
+considerPreviousSeasonLabel.grid(row=6,column=0)
+considerPreviousSeasonCheckbox.grid(row=6,column=1)
 
 
 
 seedbutton = tk.Button(master=root, text="Get Seedings", command=getSeedings)
 outvar = tk.StringVar(master=root)
 seedStatus = tk.Label(master=root, textvariable=outvar)
-seedbutton.grid(column=0, row=6)
-seedStatus.grid(column=1, row=6)
+seedbutton.grid(column=0, row=7)
+seedStatus.grid(column=1, row=7)
 
 slabel = tk.Label(master=root, text="Seeded Players")
 sentry = tk.Text(master=root, width=20, height=5)
-slabel.grid(column=0,row=7, columnspan=1)
-sentry.grid(column=0,row=8, columnspan=2)
+slabel.grid(column=0,row=8, columnspan=1)
+sentry.grid(column=0,row=9, columnspan=2)
 
 rlabel = tk.Label(master=root, text="Removed Players")
 rentry = tk.Text(master=root, width=20, height=5)
-rlabel.grid(column=0,row=9, columnspan=1)
-rentry.grid(column=0,row=10, columnspan=2)
+rlabel.grid(column=0,row=10, columnspan=1)
+rentry.grid(column=0,row=11, columnspan=2)
 
 
 root.mainloop()
