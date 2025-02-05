@@ -1,5 +1,6 @@
 import tkinter as tk
 import requests
+import time
 root = tk.Tk()
 root.title("TETR.IO Seeder")
 root.geometry("400x500")
@@ -26,7 +27,10 @@ def getSeedings():
         outvar.set("fetching player " + str(i+1) + " of " + str(len(players)))
         root.update()
         pname = players[i]
-        data = requests.get(api_base + pname.lower() + "/summaries/league") 
+        headers = requests.utils.default_headers()
+        headers["User-Agent"] = "willyjwillyj Seeder Script"
+        data = requests.get(api_base + pname.lower() + "/summaries/league", headers=headers) 
+        print(data.json())
         try:
             item = data.json()["data"]["tr"]
         except:
@@ -53,6 +57,7 @@ def getSeedings():
         names.append(pname)
         ranks.append(rank)
         mranks.append(mrank)
+        time.sleep(1)
 
         
     #filter out bad users
